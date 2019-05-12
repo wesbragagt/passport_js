@@ -1,0 +1,31 @@
+{
+    "name": "passport_js",
+    "version": "1.0.0",
+    "description": "learning how to use passport js",
+    "main": "index.js",
+    "scripts": {
+        "start": "node app.js",
+        "dev": "nodemon app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/wesbragagt/passport_js.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/wesbragagt/passport_js/issues"
+    },
+    "homepage": "https://github.com/wesbragagt/passport_js#readme",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "ejs": "^2.6.1",
+        "express": "^4.16.4",
+        "express-ejs-layouts": "^2.5.0",
+        "mysql2": "^1.6.5",
+        "passport": "^0.4.0",
+        "passport-local": "^1.0.0",
+        "sequelize": "^5.8.6"
+    }
+}
