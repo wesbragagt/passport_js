@@ -2,7 +2,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const mysql2 = require("mysql2");
 const bcrypt = require("bcryptjs");
 const db = require("../models");
-const User = require("../models/User");
+const User = db.User;
 
 module.exports = function(passport) {
     passport.use(
@@ -50,16 +50,13 @@ module.exports = function(passport) {
         done(null, user.id);
     });
 
-    // passport.deserializeUser((id, done) => {
-    //     db.User.findByPk(id, (err, user) => {
-    //         console.log('deserialize user: ', user);
-    //         done(err, user);
-    //     });
-    // });
-
     passport.deserializeUser(function(id, done) {
-        db.User.findByPk(id, function(err, user) {
-            done(err, user);
-        });
+        User.findByPk(id)
+            .then(function(user) {
+                done(null, user);
+            })
+            .catch(function(e) {
+                done(e, false);
+            });
     });
 };
