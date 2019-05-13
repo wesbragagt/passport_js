@@ -1,7 +1,7 @@
 const express = require("express");
 const passport = require("passport");
 const router = express.Router();
-const db = require("./../models");
+const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 // Login Page
 router.get("/login", (req, res) => res.render("login"));
@@ -41,9 +41,7 @@ router.post("/register", (req, res) => {
         });
     } else {
         // validation pass
-        db.User.findOne({
-            where: { email: email }
-        }).then(user => {
+        User.findOne({ email: email }).then(user => {
             // check for that user
             if (user) {
                 // user exists
@@ -70,7 +68,7 @@ router.post("/register", (req, res) => {
                         // SET PASSWORD TO HASH
                         newUser.password = hash;
                         // save user
-                        db.User.create({
+                        User.create({
                             name: newUser.name,
                             email: newUser.email,
                             password: newUser.password
@@ -97,6 +95,13 @@ router.post("/login", (req, res, next) => {
         failureRedirect: "/users/login",
         failureFlash: true
     })(req, res, next);
+});
+
+// LOGOUT HANDLE
+router.get("/logout", (req, res) => {
+    req.logout();
+    req.flash("success_msg", "You are logged out");
+    res.redirect("/users/login");
 });
 
 module.exports = router;

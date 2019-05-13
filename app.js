@@ -3,10 +3,20 @@ const expressLayouts = require("express-ejs-layouts");
 const flash = require("connect-flash");
 const session = require("express-session");
 const passport = require("passport");
-// sequelize db
-const db = require("./models");
 
 const app = express();
+
+// MONGO DB
+const mongoose = require("mongoose");
+
+// DB Config
+const db = require("./config/keys").MongoURI;
+
+// Connect to MongoDB
+mongoose
+    .connect(db, { useNewUrlParser: true })
+    .then(() => console.log("MongoDB Connected"))
+    .catch(err => console.log(err));
 
 // passport config
 require("./config/passport")(passport);
@@ -47,14 +57,5 @@ app.use((req, res, next) => {
 
 app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/user"));
-
-// connect to mysql
-db.User.sync({ force: false }).then(() => {
-    db.User.create({
-        name: "wes",
-        email: "wes@wes.com",
-        password: "123456"
-    });
-});
 
 app.listen(PORT, console.log(`Server starting on ${PORT}`));

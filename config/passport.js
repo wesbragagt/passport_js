@@ -1,7 +1,8 @@
 const LocalStrategy = require("passport-local").Strategy;
-const mysql2 = require("mysql2");
 const bcrypt = require("bcryptjs");
-const db = require("../models");
+const mongoose = require("mongoose");
+
+// load user model
 const User = require("../models/User");
 
 module.exports = function(passport) {
@@ -12,10 +13,8 @@ module.exports = function(passport) {
             },
             (email, password, done) => {
                 // Match User
-                db.User.findOne({
-                    where: {
-                        email: email
-                    }
+                User.findOne({
+                    email: email
                 })
                     .then(user => {
                         if (!user) {
@@ -58,7 +57,7 @@ module.exports = function(passport) {
     // });
 
     passport.deserializeUser(function(id, done) {
-        db.User.findByPk(id, function(err, user) {
+        User.findById(id, function(err, user) {
             done(err, user);
         });
     });
